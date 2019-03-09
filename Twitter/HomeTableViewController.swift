@@ -20,12 +20,20 @@ class HomeTableViewController: UITableViewController {
         loadTweets()
         myRefreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged) //refresh View and load content
         tableView.refreshControl = myRefreshControl
+        //TEST CODE
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 150
       
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(true)
+    self.loadTweets()
   }
   
   @objc func loadTweets(){
@@ -94,6 +102,12 @@ class HomeTableViewController: UITableViewController {
     if let imageData = data {
       cell.profileImageView.image = UIImage(data: imageData)
     }
+    //set liked and retweet button statuses
+    cell.isFavorited(tweetArray[indexPath.row]["favorited"] as! Bool)
+    cell.setRetweeted(tweetArray[indexPath.row]["retweeted"] as! Bool)
+    
+    //set respective tweetId for each cell
+    cell.tweetId = tweetArray[indexPath.row]["id"] as! Int
     
     return cell
   }
